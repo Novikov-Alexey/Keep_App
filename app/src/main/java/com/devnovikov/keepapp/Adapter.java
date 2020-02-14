@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -23,12 +25,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     private Context context;
     private ArrayList<Note> arrayList;
-    DatabaseHelper databaseHelper;
+    //DatabaseHelper databaseHelper;
 
     public Adapter(Context context, ArrayList<Note> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
-        databaseHelper = new DatabaseHelper(context);
+        //databaseHelper = new DatabaseHelper(context);
     }
 
     @NonNull
@@ -72,9 +74,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             }
         });
 
-        //when long press on item
-        //show alert dialog for delete item
-        holder.editItem.setOnLongClickListener(new View.OnLongClickListener() {
+
+        //tag need to determine the item identifier
+        holder.itemView.setTag(id);
+
+
+        /*holder.editItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show();
@@ -84,9 +89,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
                 return false;
             }
         });
+        */
     }
 
-    private void deleteDialog(final String id) {
+    /*private void deleteDialog(final String id) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
         builder.setTitle("Delete");
@@ -112,7 +118,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
         builder.create().show();
     }
-
+    */
     @Override
     public int getItemCount() {
         return arrayList.size();

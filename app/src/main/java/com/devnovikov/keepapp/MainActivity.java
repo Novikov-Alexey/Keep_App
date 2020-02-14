@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initBottomAppBar();
         databaseHelper = new DatabaseHelper(this);
+        ItemTouchListener(mRecyclerView);
     }
 
 
@@ -131,7 +133,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mRecyclerView.setLayoutManager(_sGridLayoutManager);
         RecyclerView.Adapter adapter = new com.devnovikov.keepapp.Adapter(MainActivity.this, databaseHelper.getAllData(Constants.C_UPDATE_TIMESTAMP + " DESC"));
         mRecyclerView.setAdapter(adapter);
+
         adapter.notifyDataSetChanged();
+    }
+
+    private void ItemTouchListener(RecyclerView recyclerView ) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                databaseHelper.deleteInfo(viewHolder.itemView.getTag().toString());
+                onResume();
+                //((MainActivity)getApplicationContext()).onResume();
+                Toast.makeText(getApplicationContext(), "Delete Successfully!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), ""+viewHolder.itemView.getTag(), Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(recyclerView);
     }
 
     @OnClick(R.id.fab)
