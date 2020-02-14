@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Keep App</string>
+
+    <string name="nav_notes">Notes</string>
+    <string name="nav_trash">Trash</string>
+    <string name="nav_notifications">Notifications</string>
+    <string name="nav_archive">Archive</string>
+
+    <string name="nav_open_drawer">Open navigation drawer</string>
+    <string name="nav_close_drawer">Close navigation drawer</string>
+    <string name="user_name">\@devnovikov</string>
+    <string name="action_check">Check</string>
+    <string name="action_draw">Draw</string>
+    <string name="action_micro">Micro</string>
+    <string name="action_picture">picture</string>
+</resources>

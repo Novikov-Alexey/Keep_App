@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/app_bar_check"
+        android:icon="@drawable/ic_check_box_24px"
+        android:title="@string/action_check"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/app_bar_draw"
+        android:icon="@drawable/ic_brush_24px"
+        android:title="@string/action_draw"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/app_bar_micro"
+        android:icon="@drawable/ic_keyboard_voice_24px"
+        android:title="@string/action_micro"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/app_bar_picture"
+        android:icon="@drawable/ic_photo_24px"
+        android:title="@string/action_picture"
+        app:showAsAction="always"/>
+
+</menu>
