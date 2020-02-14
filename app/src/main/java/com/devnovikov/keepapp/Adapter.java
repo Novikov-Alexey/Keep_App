@@ -1,6 +1,8 @@
 package com.devnovikov.keepapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,10 +23,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     private Context context;
     private ArrayList<Note> arrayList;
+    DatabaseHelper databaseHelper;
 
     public Adapter(Context context, ArrayList<Note> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
+        databaseHelper = new DatabaseHelper(context);
     }
 
     @NonNull
@@ -66,6 +71,46 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
                 context.startActivity(intent);
             }
         });
+
+        //when long press on item
+        //show alert dialog for delete item
+        holder.editItem.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show();
+                deleteDialog(
+                        ""+id
+                );
+                return false;
+            }
+        });
+    }
+
+    private void deleteDialog(final String id) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        builder.setTitle("Delete");
+        builder.setMessage("Are you want to delete?");
+        builder.setCancelable(true);
+        builder.setIcon(R.drawable.ic_delete_white_24px);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                databaseHelper.deleteInfo(id);
+                ((MainActivity)context).onResume();
+                Toast.makeText(context, "Delete Successfully!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.create().show();
     }
 
     @Override
