@@ -40,9 +40,9 @@ public class NoteActivity extends AppCompatActivity {
     @BindView(R.id.personImage)
     ImageView pImageView;
     @BindView(R.id.note_title)
-    EditText pNameEt;
+    EditText noteTitleEt;
     @BindView(R.id.note_subtitle)
-    EditText pAgeEt;
+    EditText noteSubtitleEt;
     @BindView(R.id.addButton)
     Button saveButton;
     @BindView(R.id.toolbar_note)
@@ -101,8 +101,8 @@ public class NoteActivity extends AppCompatActivity {
             addTimeStamp = intent.getStringExtra("ADD_TIMESTAMP");
             updateTimeStamp = intent.getStringExtra("UPDATE_TIMESTAMP");
 
-            pNameEt.setText(title);
-            pAgeEt.setText(subTitle);
+            noteTitleEt.setText(title);
+            noteSubtitleEt.setText(subTitle);
 
             if (imageUri.toString().equals(null)) {
                 pImageView.setImageResource(R.drawable.ic_action_addphoto);
@@ -180,8 +180,8 @@ public class NoteActivity extends AppCompatActivity {
 
     private void getData() {
 
-        title = pNameEt.getText().toString().trim();
-        subTitle = pAgeEt.getText().toString().trim();
+        title = noteTitleEt.getText().toString().trim();
+        subTitle = noteSubtitleEt.getText().toString().trim();
 
         if (editMode) {
             String newUpdateTime = "" + System.currentTimeMillis();
