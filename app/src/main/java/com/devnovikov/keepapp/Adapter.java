@@ -1,21 +1,16 @@
 package com.devnovikov.keepapp;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -25,12 +20,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
 
     private Context context;
     private ArrayList<Note> arrayList;
-    //DatabaseHelper databaseHelper;
 
-    public Adapter(Context context, ArrayList<Note> arrayList) {
+    Adapter(Context context, ArrayList<Note> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
-        //databaseHelper = new DatabaseHelper(context);
     }
 
     @NonNull
@@ -59,25 +52,36 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         holder.title.setText(title);
         holder.subtitle.setText(subtitle);
 
-        holder.editItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, NoteActivity.class);
-                intent.putExtra("ID", id);
-                intent.putExtra("TITLE", title);
-                intent.putExtra("SUBTITLE", subtitle);
-                intent.putExtra("IMAGE", image);
-                intent.putExtra("ADD_TIMESTAMP", addTimeStamp);
-                intent.putExtra("UPDATE_TIMESTAMP", updateTimeStamp);
-                intent.putExtra("EDIT_MODE", true);
-                context.startActivity(intent);
-            }
-        });
-
+        holder.editItem.setOnClickListener(
+                (v) -> {
+                    Intent intent = new Intent(context, NoteActivity.class);
+                    intent.putExtra("ID", id);
+                    intent.putExtra("TITLE", title);
+                    intent.putExtra("SUBTITLE", subtitle);
+                    intent.putExtra("IMAGE", image);
+                    intent.putExtra("ADD_TIMESTAMP", addTimeStamp);
+                    intent.putExtra("UPDATE_TIMESTAMP", updateTimeStamp);
+                    intent.putExtra("EDIT_MODE", true);
+                    context.startActivity(intent);
+                });
 
         //tag need to determine the item identifier
         holder.itemView.setTag(id);
 
+//        holder.editItem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, NoteActivity.class);
+//                intent.putExtra("ID", id);
+//                intent.putExtra("TITLE", title);
+//                intent.putExtra("SUBTITLE", subtitle);
+//                intent.putExtra("IMAGE", image);
+//                intent.putExtra("ADD_TIMESTAMP", addTimeStamp);
+//                intent.putExtra("UPDATE_TIMESTAMP", updateTimeStamp);
+//                intent.putExtra("EDIT_MODE", true);
+//                context.startActivity(intent);
+//            }
+//        });
 
         /*holder.editItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -124,17 +128,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         return arrayList.size();
     }
 
-    class Holder extends RecyclerView.ViewHolder {
+    static class Holder extends RecyclerView.ViewHolder {
 
-        //BindView(R.id.profileIv) ImageView profileIv;
-        //BindView(R.id.title) TextView title;
-        //BindView(R.id.subTitlle) TextView subTitlle;
-        //BindView(R.id.phone) TextView phone;
-        ImageView profileIv;
-        TextView title, subtitle;
-        ConstraintLayout editItem;
+        private ImageView profileIv;
+        private TextView title, subtitle;
+        private ConstraintLayout editItem;
 
-        public Holder(@NonNull View itemView) {
+        Holder(@NonNull View itemView) {
             super(itemView);
             profileIv = itemView.findViewById(R.id.profileIv);
             title = itemView.findViewById(R.id.title);

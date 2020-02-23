@@ -23,17 +23,24 @@ import com.google.android.material.navigation.NavigationView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemSelected;
+import butterknife.Unbinder;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.drawer_layout) DrawerLayout drawer;
-    @BindView(R.id.nav_view) NavigationView navigationView;
-    @BindView(R.id.bottom_app_bar) BottomAppBar bottomAppBar;
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
-    DatabaseHelper databaseHelper;
+    private Unbinder unbinder;
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+    @BindView(R.id.bottom_app_bar)
+    BottomAppBar bottomAppBar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+    private DatabaseHelper databaseHelper;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -45,10 +52,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Notes");
+        toolbar.setTitle(getString(R.string.title_notes));
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_open_drawer, R.string.nav_close_drawer);
@@ -98,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initBottomAppBar() {
         bottomAppBar.replaceMenu(R.menu.menu_bottomappbar);
         bottomAppBar.setOnMenuItemClickListener(
-                (item)-> {
+                (item) -> {
                     switch (item.getItemId()) {
                         case R.id.app_bar_check:
                             Toast.makeText(MainActivity.this, "app_bar_check", Toast.LENGTH_SHORT).show();
@@ -137,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.notifyDataSetChanged();
     }
 
-    private void ItemTouchListener(RecyclerView recyclerView ) {
+    private void ItemTouchListener(RecyclerView recyclerView) {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -147,10 +154,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 databaseHelper.deleteInfo(viewHolder.itemView.getTag().toString());
-                onResume();
-                //((MainActivity)getApplicationContext()).onResume();
+                showRecord();
                 Toast.makeText(getApplicationContext(), "Delete Successfully!", Toast.LENGTH_SHORT).show();
-                //Toast.makeText(getApplicationContext(), ""+viewHolder.itemView.getTag(), Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
     }
@@ -170,9 +175,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == event.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             moveTaskToBack(true);
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }
